@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Somalite School Management System — Proposal</title>
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Calibri', 'Segoe UI', Arial, sans-serif;
+      font-size: 11pt;
+      color: #2c3e50;
+      background: #fff;
+      line-height: 1.65;
+    }
+
+    /* ── Page wrapper ── */
+    .page {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 0 40px 60px;
+    }
+
+    /* ── Print ── */
+    @media print {
+      body { font-size: 10pt; }
+      .page { max-width: 100%; margin: 0; padding: 0 20px 40px; }
+      .no-print { display: none !important; }
+      h1, h2, h3 { page-break-after: avoid; }
+      .section { page-break-inside: avoid; }
+      .cover { page-break-after: always; }
+    }
+
+    /* ── Cover Page ── */
+    .cover {
+      text-align: center;
+      padding: 80px 40px 60px;
+      border-bottom: 4px solid #003366;
+      margin-bottom: 48px;
+      background: linear-gradient(135deg, #f8faff 0%, #eef4ff 100%);
+      border-radius: 0 0 16px 16px;
+    }
+    .cover .label {
+      font-size: 9pt;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #0066b2;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .cover h1 {
+      font-size: 52pt;
+      font-weight: 900;
+      color: #003366;
+      letter-spacing: -1px;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .cover .subtitle {
+      font-size: 18pt;
+      color: #0066b2;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .cover .tagline {
+      font-size: 12pt;
+      color: #555;
+      margin-bottom: 40px;
+    }
+    .cover hr {
+      border: none;
+      border-top: 2px solid #0066b2;
+      margin: 24px auto;
+      width: 60%;
+      opacity: 0.4;
+    }
+    .cover .meta {
+      font-size: 9.5pt;
+      color: #666;
+      font-style: italic;
+    }
+
+    /* ── Running header/footer (print only) ── */
+    @page {
+      margin: 20mm 20mm 18mm;
+      @top-right { content: "Somalite School Management System | Confidential"; font-size: 8pt; color: #0066b2; }
+      @bottom-center { content: "Page " counter(page); font-size: 8pt; }
+    }
+
+    /* ── Section headings ── */
+    .section { margin-bottom: 40px; }
+
+    h1.section-title {
+      font-size: 19pt;
+      font-weight: 800;
+      color: #003366;
+      border-bottom: 3px solid #003366;
+      padding-bottom: 8px;
+      margin-bottom: 18px;
+      margin-top: 48px;
+    }
+    h2.sub-title {
+      font-size: 13pt;
+      font-weight: 700;
+      color: #2c3e50;
+      margin: 22px 0 10px;
+    }
+
+    /* ── Body text ── */
+    p { margin-bottom: 12px; }
+
+    /* ── Bullet lists ── */
+    ul.bullets {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 14px 0;
+    }
+    ul.bullets li {
+      display: flex;
+      gap: 12px;
+      padding: 4px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 10.5pt;
+    }
+    ul.bullets li:last-child { border-bottom: none; }
+    ul.bullets li::before {
+      content: "●";
+      color: #0066b2;
+      font-size: 7pt;
+      margin-top: 5px;
+      flex-shrink: 0;
+    }
+    ul.bullets li strong { color: #003366; min-width: 160px; display: inline-block; }
+
+    /* ── TOC ── */
+    .toc { background: #f0f6ff; border-left: 4px solid #0066b2; padding: 20px 28px; border-radius: 0 8px 8px 0; margin-bottom: 32px; }
+    .toc h2 { color: #003366; font-size: 13pt; margin-bottom: 12px; }
+    .toc ol { padding-left: 20px; }
+    .toc ol li { padding: 3px 0; font-size: 10.5pt; color: #2c3e50; }
+
+    /* ── Stage table ── */
+    .stage-table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 10pt; }
+    .stage-table th, .stage-table td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; vertical-align: top; }
+    .stage-table thead tr { background: #003366; color: #fff; }
+    .stage-table tbody tr:nth-child(even) { background: #f8faff; }
+    .stage-table td:first-child { font-weight: 700; white-space: nowrap; color: #003366; }
+
+    /* ── Pricing table ── */
+    .pricing-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 10pt; }
+    .pricing-table th { background: #003366; color: #fff; padding: 10px 14px; text-align: left; }
+    .pricing-table td { border: 1px solid #ccc; padding: 9px 14px; vertical-align: top; }
+    .pricing-table tbody tr:nth-child(even) { background: #f8faff; }
+    .pricing-table td:first-child { font-weight: 700; color: #0066b2; }
+
+    /* ── Highlight box ── */
+    .highlight-box {
+      background: #e8f4fd;
+      border: 1px solid #b3d9f5;
+      border-left: 4px solid #0066b2;
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      margin: 16px 0;
+      font-size: 10.5pt;
+    }
+
+    /* ── Why Somalite cards ── */
+    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+    .why-card { background: #f8faff; border: 1px solid #dde8f8; border-top: 3px solid #0066b2; border-radius: 0 0 8px 8px; padding: 16px 18px; }
+    .why-card h3 { color: #003366; font-size: 11pt; margin-bottom: 8px; }
+    .why-card p { font-size: 10pt; color: #444; margin: 0; }
+    @media (max-width: 600px) { .why-grid { grid-template-columns: 1fr; } }
+
+    /* ── Portal chips ── */
+    .portal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0; }
+    .portal-chip { background: #f0f6ff; border: 1px solid #b3d9f5; border-radius: 8px; padding: 12px 14px; text-align: center; }
+    .portal-chip .icon { font-size: 20pt; margin-bottom: 6px; }
+    .portal-chip strong { display: block; font-size: 9.5pt; color: #003366; }
+    .portal-chip span { font-size: 8.5pt; color: #666; }
+    @media (max-width: 600px) { .portal-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    /* ── CTA block ── */
+    .cta {
+      text-align: center;
+      background: linear-gradient(135deg, #003366, #0066b2);
+      color: #fff;
+      padding: 40px 32px;
+      border-radius: 12px;
+      margin-top: 48px;
+    }
+    .cta h2 { font-size: 20pt; margin-bottom: 10px; }
+    .cta p { font-size: 11pt; opacity: 0.9; margin-bottom: 6px; }
+    .cta .contact-info { margin-top: 18px; font-size: 11pt; font-weight: 600; line-height: 2; }
+
+    /* ── Divider ── */
+    .divider { border: none; border-top: 2px solid #dde8f8; margin: 40px 0; }
+
+    /* ── Print button ── */
+    .print-btn {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      background: #003366;
+      color: #fff;
+      border: none;
+      padding: 12px 22px;
+      border-radius: 8px;
+      font-size: 11pt;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0,51,102,0.3);
+      z-index: 100;
+    }
+    .print-btn:hover { background: #0066b2; }
+    @media print { .print-btn { display: none; } }
+  </style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">🖨 Print / Save PDF</button>
+
+<div class="page">
+
+  <!-- ══════════════════════════════════════════════
+       COVER PAGE
+  ══════════════════════════════════════════════ -->
+  <div class="cover">
+    <p class="label">Proposal Document</p>
+    <h1>SOMALITE</h1>
+    <p class="subtitle">School Management System</p>
+    <p class="tagline">A Comprehensive Digital Solution for Modern Schools</p>
+    <hr />
+    <p class="meta">Prepared by: Somalite Technologies &nbsp;|&nbsp; April 2026 &nbsp;|&nbsp; Version 1.0</p>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════
+       EXECUTIVE SUMMARY
+  ══════════════════════════════════════════════ -->
+  <h1 class="section-title">Executive Summary</h1>
+
+  <p>Somalite is a fully integrated, cloud-based School Management System (SMS) purpose-built for secondary and tertiary institutions. It replaces paper-based processes, fragmented spreadsheets, and disconnected software tools with a single, unified platform that covers every aspect of school operations — from student admissions and academic records, to fee collection, payroll, timetabling, and parent communication.</p>
+
+  <p>Built on modern, enterprise-grade technology and designed specifically for the African school environment, Somalite empowers school administrators, teachers, bursars, directors of studies, parents, and students through dedicated role-based portals — each tailored to the exact needs of that user.</p>
+
+  <p>This document outlines the full feature set, portal structure, benefits, and implementation approach of the Somalite platform.</p>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════════════════
+       TABLE OF CONTENTS
+  ══════════════════════════════════════════════ -->
+  <div class="toc">
+    <h2>Table of Contents</h2>
+    <ol>
+      <li>Overview &amp; Platform Architecture</li>
+      <li>School Administration Portal</li>
+      <li>Academic Management</li>
+      <li>Examination &amp; Continuous Assessment</li>
+      <li>Report Card System</li>
+      <li>Student Attendance</li>
+      <li>Finance &amp; Fee Management</li>
+      <li>Human Resources &amp; Payroll</li>
+      <li>Timetable Generation</li>
+      <li>Teacher Portal</li>
+      <li>Director of Studies (DOS) Portal</li>
+      <li>Bursar Portal</li>
+      <li>Parent Portal</li>
+      <li>Student Portal</li>
+      <li>Communication &amp; Notifications</li>
+      <li>Inventory &amp; Procurement</li>
+      <li>Reporting &amp; Analytics</li>
+      <li>Security &amp; Multi-Tenancy</li>
+      <li>Implementation &amp; Support</li>
+      <li>Pricing Overview</li>
+    </ol>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════
+       1. OVERVIEW & PLATFORM ARCHITECTURE
+  ══════════════════════════════════════════════ -->
+  <h1 class="section-title">1. Overview &amp; Platform Architecture</h1>
+
+  <p>Somalite is a multi-tenant, web-based platform accessible on any device with a modern browser — desktop, tablet, or smartphone. There is no software to install and no server infrastructure to maintain. Schools are onboarded within hours and data is securely stored in the cloud with automatic backups.</p>
+
+  <h2 class="sub-title">Core Technology Stack</h2>
+  <ul class="bullets">
+    <li><strong>Next.js 15</strong> Modern, fast web framework with server-side rendering</li>
+    <li><strong>Prisma ORM</strong> Type-safe database access with PostgreSQL</li>
+    <li><strong>NextAuth</strong> Secure session-based authentication</li>
+    <li><strong>Cloudflare R2</strong> Cloud file storage for documents, photos, and reports</li>
+    <li><strong>Tailwind CSS</strong> Responsive, mobile-first UI design</li>
+  </ul>
+
+  <h2 class="sub-title">Six Dedicated Role-Based Portals</h2>
+  <div class="portal-grid">
+    <div class="portal-chip"><div class="icon">🏫</div><strong>School Admin Portal</strong><span>Full control over all school operations</span></div>
+    <div class="portal-chip"><div class="icon">📚</div><strong>Teacher Portal</strong><span>Mark entry, attendance, class management</span></div>
+    <div class="portal-chip"><div class="icon">🎓</div><strong>Director of Studies</strong><span>Marks approval, report cards, timetable oversight</span></div>
+    <div class="portal-chip"><div class="icon">💳</div><strong>Bursar Portal</strong><span>Fee management, payments, financial reporting</span></div>
+    <div class="portal-chip"><div class="icon">👨‍👩‍👧</div><strong>Parent Portal</strong><span>Child progress, fee balances, school updates</span></div>
+    <div class="portal-chip"><div class="icon">👨‍🎓</div><strong>Student Portal</strong><span>Results, timetables, communications</span></div>
+  </div>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════════════════
+       2. SCHOOL ADMINISTRATION PORTAL
+  ══════════════════════════════════════════════ -->
+  <h1 class="section-title">2. School Administration Portal</h1>
+
+  <p>The School Admin Portal is the command centre of the platform. School administrators have full visibility and control over every module. The dashboard provides live snapshots of student enrollment, fee collection status, pending approvals, and recent activity across all departments.</p>
+
+  <h2 class="sub-title">Key Capabilities</h2>
+  <ul class="bullets">
+    <li><strong>School Profile Management</strong> School name, logo, address, motto, contact details, and brand colours for portal theming</li>
+    <li><strong>Multi-Year Academic Setup</strong> Create and manage multiple academic years and terms, set active year, configure term dates</li>
+    <li><strong>Class &amp; Stream Management</strong> Define class templates (e.g. S.1, S.2), create class years per academic year, and manage streams (e.g. S.2A, S.2B) with class head assignments</li>
+    <li><strong>User Account Management</strong> Create and manage accounts for teachers, staff, bursars, parents, and students with role-based access control</li>
+    <li><strong>Role Assignment &amp; Permissions</strong> Assign multiple roles to staff members, control what each user can see and do within the system</li>
+    <li><strong>Activity Audit Log</strong> Full audit trail of all sensitive operations including mark changes, fee adjustments, and user modifications</li>
+    <li><strong>School Colour Theming</strong> Each school's portal reflects its own brand colours automatically applied throughout the interface</li>
+  </ul>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════════════════
+       3. ACADEMIC MANAGEMENT
+  ══════════════════════════════════════════════ -->
+  <h1 class="section-title">3. Academic Management</h1>
+
+  <p>Somalite provides a complete academic structure management system, handling everything from class creation through to student enrollment and subject assignment.</p>
+
+  <h2 class="sub-title">Academic Year &amp; Term Management</h2>
+  <ul class="bullets">
+    <li><strong></strong>Create and archive academic years (e.g. 2025/2026)</li>
+    <li><strong></strong>Define terms per year (Term 1, Term 2, Term 3) with start and end dates</li>
+    <li><strong></strong>Mark one term as active — the system uses this for all mark entry, attendance, and fee workflows</li>
+    <li><strong></strong>Historical data preserved across all years for auditing and reporting</li>
+  </ul>
+
+  <h2 class="sub-title">Classes &amp; Streams</h2>
+  <ul class="bullets">
+    <li><strong></strong>Define class templates with levels (e.g. Senior 1 through Senior 6)</li>
+    <li><strong></strong>Create class years that link class templates to academic years</li>
+    <li><strong></strong>Create multiple streams per class year (e.g. S.3A, S.3B, S.3C, S.3 Sciences)</li>
+    <li><strong></strong>Assign a class head teacher to each stream</li>
+  </ul>
+
+  <h2 class="sub-title">Subject Management</h2>
+  <ul class="bullets">
+    <li><strong></strong>Create a school-wide subject library (subject name, code, department)</li>
+    <li><strong></strong>Assign subjects to specific class years with paper configurations (Paper 1, Paper 2, Paper 3)</li>
+    <li><strong></strong>Assign subjects to streams and link subject teachers</li>
+    <li><strong></strong>Configure assessment settings per subject: mark weights, AOI settings, grading scales</li>
+    <li><strong></strong>Full paper management for O-Level and A-Level examination configurations</li>
+  </ul>
+
+  <h2 class="sub-title">Student Enrollment</h2>
+  <ul class="bullets">
+    <li><strong></strong>Enroll students into specific streams and terms</li>
+    <li><strong></strong>Subject-level enrollment to track which students take which subjects</li>
+    <li><strong></strong>Bulk student promotions at end of year (promote entire classes with one action)</li>
+    <li><strong></strong>Transfer students between streams with full transfer history records</li>
+    <li><strong></strong>Enrollment status tracking: Active, Completed, Transferred, Withdrawn</li>
+  </ul>
+
+  <h2 class="sub-title">Student Profiles</h2>
+  <ul class="bullets">
+    <li><strong></strong>Comprehensive student record: name, admission number, date of birth, gender, religion, nationality, blood group, medical conditions, photo</li>
+    <li><strong></strong>Parent/guardian linkage with contact details</li>
+    <li><strong></strong>Full enrollment history across academic years</li>
+    <li><strong></strong>Academic results history, attendance history, fee account summary</li>
+    <li><strong></strong>Project works portfolio (up to 10 items per student)</li>
+  </ul>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════════════════
+       4. EXAMINATION & CONTINUOUS ASSESSMENT
+  ══════════════════════════════════════════════ -->
+  <h1 class="section-title">4. Examination &amp; Continuous Assessment</h1>
+
+  <p>Somalite implements a multi-stage marks management workflow designed to ensure accuracy, accountability, and proper sign-off at every level before results are published.</p>
+
+  <h2 class="sub-title">Mark Entry by Teachers</h2>
+  <ul class="bullets">
+    <li><strong></strong>Teachers enter marks per student per subject paper directly from their portal</li>
+    <li><strong></strong>Three exam types supported: BOT (Beginning of Term), MTE (Mid-Term Exam), EOT (End of Term)</li>
+    <li><strong></strong>Marks saved as DRAFT, then submitted for class teacher review</li>
+    <li><strong></strong>Mark entry form shows each student's name, admission number, and current mark</li>
+    <li><strong></strong>Configurable maximum marks per paper</li>
+  </ul>
+
+  <h2 class="sub-title">Three-Stage Approval Workflow</h2>
+  <table class="stage-table">
+    <thead>
+      <tr><th>Stage</th><th>Actor</th><th>Action</th><th>Resulting Status</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Stage 1</td><td>Subject Teacher</td><td>Enters marks and submits for review</td><td>SUBMITTED</td></tr>
+      <tr><td>Stage 2</td><td>Class Head Teacher</td><td>Reviews and approves or rejects with comments</td><td>CLASS_TEACHER_APPROVED / REJECTED</td></tr>
+      <tr><td>Stage 3</td><td>Director of Studies</td><td>Final approval — locks results permanently</td><td>APPROVED</td></tr>
+    </tbody>
+  </table>
+  <p>All stage changes are timestamped and attributed to the acting user. Rejected marks must be corrected and resubmitted by the teacher.</p>
+
+  <h2 class="sub-title">Areas of Integration (AOI) — Continuous Assessment</h2>
+  <ul class="bullets">
+    <li><strong></strong>AOI supports practical, project-based, and continuous assessment scoring</li>
+    <li><strong></strong>Class teachers define AOI topics per subject (with topic number, name, max points)</li>
+    <li><strong></strong>Teachers enter scores per student per AOI topic</li>
+    <li><strong></strong>Competence level, generic skills assessment, and remarks fields per topic</li>
+    <li><strong></strong>Same three-stage approval workflow applies to AOI scores</li>
+    <li><strong></strong>AOI scores contribute to final subject marks per configured weight</li>
+  </ul>
+
+  <h2 class="sub-title">Grading Configuration</h2>
+  <ul class="bullets">
+    <li><strong></strong>Admin-configurable grade boundaries per subject or school-wide (A, B, C, D, F with mark ranges)</li>
+    <li><strong></strong>Separate AOI grading scales configurable per class</li>
+    <li><strong></strong>Division calculation for O-Level (Division I, II, III, IV, Fail based on aggregate)</li>
+    <li><strong></strong>Points-based grade calculation for A-Level</li>
+    <li><strong></strong>Mark audit log records every change with before/after values</li>
+  </ul>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════════════════
+       5. REPORT CARD SYSTEM
+  ══════════════════════════════════════════════ -->
+  <h1 class="section-title">5. Report Card System</h1>
+
+  <p>Somalite generates professional, printable report cards automatically from approved marks. Three report card types are supported, each with full school branding.</p>
+
+  <h2 class="sub-title">Report Card Types</h2>
+  <ul class="bullets">
+    <li><strong>End of Term Report Card</strong> Complete term results with subject marks, grades, positions, division, teacher remarks, and head teacher comment</li>
+    <li><strong>Mid-Term Report Card</strong> Interim results for parent communication at mid-term</li>
+    <li><strong>AOI Assessment Report</strong> Dedicated report showing AOI topics, scores, competence levels, generic skills, and remarks per subject</li>
+  </ul>
+
+  <h2 class="sub-title">Report Card Features</h2>
+  <ul class="bullets">
+    <li><strong></strong>School logo, name, address, and motto displayed on every card</li>
+    <li><strong></strong>Student photo, name, class, stream, admission number, and term</li>
+    <li><strong></strong>Subject-by-subject breakdown with paper marks, totals, grades, and positions</li>
+    <li><strong></strong>Class average and student position in class</li>
+    <li><strong></strong>Overall aggregate, division (O-Level), or points tally (A-Level)</li>
+    <li><strong></strong>Teacher remarks per subject and head teacher general comment</li>
+    <li><strong></strong>Signature lines for class teacher and head teacher</li>
+    <li><strong></strong>School colour-themed borders and headers</li>
+    <li><strong></strong>Toggle controls: admin/DOS can choose which fields appear on printed cards</li>
+    <li><strong></strong>Print All button generates PDF-ready output for the entire class at once</li>
+  </ul>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════════════════
+       6. STUDENT ATTENDANCE
+  ══════════════════════════════════════════════ -->
+  <h1 class="section-title">6. Student Attendance</h1>
+
+  <p>Daily student attendance is tracked at the stream level by the assigned class head teacher. The system enforces one attendance record per student per calendar day, preventing duplicate entries.</p>
+
+  <h2 class="sub-title">Teacher Attendance Marking</h2>
+  <ul class="bullets">
+    <li><strong></strong>Class head teachers see only their assigned stream(s) in the attendance portal</li>
+    <li><strong></strong>Date picker defaults to today; teachers cannot mark future dates</li>
+    <li><strong></strong>Four status options per student: <strong>Present, Absent, Late, Excused</strong></li>
+    <li><strong></strong>Optional notes field per student (e.g. "doctor's appointment")</li>
+    <li><strong>Mark All shortcuts</strong> Set all students to one status in a single click</li>
+    <li><strong></strong>Summary count tiles show Present / Absent / Late / Excused totals at a glance</li>
+    <li><strong></strong>Re-submitting on the same day updates existing records (no duplicates)</li>
+    <li><strong></strong>Badge confirms when a day's attendance has already been marked</li>
+  </ul>
+
+  <h2 class="sub-title">Admin Attendance Management</h2>
+  <ul class="bullets">
+    <li><strong></strong>Admin can view and edit attendance for any stream on any date</li>
+    <li><strong></strong>Admin can correct or override attendance submitted by teachers</li>
+  </ul>
+
+  <h2 class="sub-title">Attendance Reports</h2>
+  <ul class="bullets">
+    <li><strong></strong>Term-level attendance summary per stream: select stream + term and click Generate</li>
+    <li><strong></strong>Class-wide attendance rate with colour-coded progress bar (green ≥80%, amber 60–79%, red &lt;60%)</li>
+    <li><strong></strong>Per-student breakdown: total days, present, late, absent, excused, and attendance rate</li>
+    <li><strong></strong>Students ranked by attendance rate to identify at-risk learners</li>
+    <li><strong></strong>Per-student attendance history with date, status, notes, and the teacher who marked it</li>
+  </ul>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════════════════
+       7. FINANCE & FEE MANAGEMENT
+  ══════════════════════════════════════════════ -->
+  <h1 class="section-title">7. Finance &amp; Fee Management</h1>
+
+  <p>Somalite includes a complete, end-to-end school finance module. Every financial transaction — from invoice generation to payment receipt — is tracked, attributed, and reportable.</p>
+
+  <h2 class="sub-title">Fee Structure Setup</h2>
+  <ul class="bullets">
+    <li><strong></strong>Define fee categories (Tuition, Development Fund, Boarding, Meals, Uniforms, etc.)</li>
+    <li><strong></strong>Create fee structures per class level, term, and boarding status</li>
+    <li><strong></strong>Configure installment plans with due dates and amounts</li>
+    <li><strong></strong>Set penalty rules for late payment (flat fee or percentage, with grace period)</li>
+  </ul>
+
+  <h2 class="sub-title">Invoicing</h2>
+  <ul class="bullets">
+    <li><strong></strong>Auto-generate invoices for all students in a class/term with one action</li>
+    <li><strong></strong>Invoice PDF generation with school branding and payment details</li>
+    <li><strong></strong>Invoice status tracking: Draft, Sent, Partially Paid, Paid, Overdue</li>
+  </ul>
+
+  <h2 class="sub-title">Payment Recording</h2>
+  <ul class="bullets">
+    <li><strong></strong>Record payments against specific invoices (cash, bank transfer, mobile money)</li>
+    <li><strong></strong>Generate payment receipts with school logo and receipt number — styled with school brand colours</li>
+    <li><strong></strong>Partial payments supported with outstanding balance tracking</li>
+    <li><strong></strong>Carry-forward of credits from one term to the next</li>
+  </ul>
+
+  <h2 class="sub-title">Bursaries &amp; Scholarships</h2>
+  <ul class="bullets">
+    <li><strong></strong>Define bursary/scholarship programmes with eligibility and funding amounts</li>
+    <li><strong></strong>Assign bursaries to individual students — allocations automatically deducted from fee accounts</li>
+    <li><strong></strong>Bursary reports showing total awarded per term</li>
+  </ul>
+
+  <h2 class="sub-title">Student Fee Accounts</h2>
+  <ul class="bullets">
+    <li><strong></strong>Each student has a persistent fee account showing full payment history</li>
+    <li><strong></strong>Running balance (amount owed or in credit) visible to admin, bursar, and parent</li>
+    <li><strong></strong>All invoices, payments, bursaries, and penalties linked to the account</li>
+  </ul>
+
+  <h2 class="sub-title">Financial Reports</h2>
+  <ul class="bullets">
+    <li><strong></strong>Daily, weekly, monthly, and term-level collections reports</li>
+    <li><strong></strong>Outstanding fees report — list of students with unpaid balances</li>
+    <li><strong></strong>Revenue breakdown by fee category</li>
+    <li><strong></strong>Expense summary with category breakdown and vendor details</li>
+  </ul>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════════════════
+       8. HUMAN RESOURCES & PAYROLL
+  ══════════════════════════════════════════════ -->
+  <h1 class="section-title">8. Human Resources &amp; Payroll</h1>
+
+  <p>The HR module covers the full employee lifecycle for all school staff — from onboarding to offboarding — with an integrated payroll system that handles allowances, deductions, leave, and statutory compliance.</p>
+
+  <h2 class="sub-title">Staff Management</h2>
+  <ul class="bullets">
+    <li><strong></strong>Comprehensive staff profiles: personal information, qualifications, employment type, department, position</li>
+    <li><strong></strong>Contract management with contract type, start/end dates, and renewal tracking</li>
+    <li><strong></strong>Document storage for contracts, certificates, and other staff documents</li>
+    <li><strong></strong>Staff notice board for internal announcements</li>
+  </ul>
+
+  <h2 class="sub-title">Leave Management</h2>
+  <ul class="bullets">
+    <li><strong></strong>Define leave types (Annual, Sick, Maternity, Paternity, Compassionate)</li>
+    <li><strong></strong>Leave balance tracking per staff member per leave type</li>
+    <li><strong></strong>Leave request submission and approval workflow</li>
+  </ul>
+
+  <h2 class="sub-title">Payroll Processing</h2>
+  <ul class="bullets">
+    <li><strong></strong>Configure salary allowance profiles (Housing, Transport, Medical, etc.)</li>
+    <li><strong></strong>Configure deduction profiles (NSSF, PAYE, Loan repayments, etc.)</li>
+    <li><strong></strong>Monthly payroll batch generation for all active staff</li>
+    <li><strong></strong>Automatic computation of net pay from gross, allowances, and deductions</li>
+    <li><strong></strong>Payslip generation per employee (printable PDF)</li>
+    <li><strong></strong>Statutory reports (PAYE, NSSF) for regulatory compliance</li>
+  </ul>
+
+  <h2 class="sub-title">Performance &amp; Discipline</h2>
+  <ul class="bullets">
+    <li><strong></strong>Appraisal cycles with configurable performance criteria</li>
+    <li><strong></strong>Disciplinary case recording and tracking</li>
+    <li><strong></strong>Grievance case management with resolution records</li>
+    <li><strong></strong>Training programme management with participant tracking</li>
+  </ul>
+
+  <h2 class="sub-title">Staff Offboarding</h2>
+  <ul class="bullets">
+    <li><strong></strong>Exit record management with exit type (Resignation, Dismissal, Retirement, End of Contract)</li>
+    <li><strong></strong>Handover notes and exit interview records</li>
+    <li><strong></strong>Automatic deactivation of system access upon exit</li>
+  </ul>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════════════════
+       9. TIMETABLE GENERATION
+  ══════════════════════════════════════════════ -->
+  <h1 class="section-title">9. Timetable Generation</h1>
+
+  <p>Somalite includes an AI-powered timetable engine that automatically generates clash-free, optimised school timetables. Manual scheduling for large schools is error-prone and time-consuming; Somalite solves this in minutes.</p>
+
+  <h2 class="sub-title">Configuration</h2>
+  <ul class="bullets">
+    <li><strong></strong>Define school day structure: number of periods, break times, day start and end times</li>
+    <li><strong></strong>Configure class-specific day structures if different classes have different schedules</li>
+    <li><strong></strong>Set subjects' periods-per-week requirements per class</li>
+    <li><strong></strong>Mark teacher availability slots (blocked periods, part-time constraints)</li>
+  </ul>
+
+  <h2 class="sub-title">AI Generation Engine</h2>
+  <ul class="bullets">
+    <li><strong></strong>Genetic algorithm-based generation ensures no teacher double-booking</li>
+    <li><strong></strong>No classroom or stream conflicts</li>
+    <li><strong></strong>Respects teacher blocked slots and availability windows</li>
+    <li><strong></strong>Multiple timetable versions can be generated and compared</li>
+    <li><strong></strong>Conflict detection and reporting — identifies any unresolvable constraints</li>
+  </ul>
+
+  <h2 class="sub-title">Timetable Publishing</h2>
+  <ul class="bullets">
+    <li><strong></strong>Publish the approved version to make it live for all users</li>
+    <li><strong></strong>Teachers see their personal weekly timetable in their portal</li>
+    <li><strong></strong>Students see their class timetable</li>
+    <li><strong></strong>PDF export for printing and display on notice boards</li>
+  </ul>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════════════════
+       10. TEACHER PORTAL
+  ══════════════════════════════════════════════ -->
+  <h1 class="section-title">10. Teacher Portal</h1>
+
+  <p>The Teacher Portal gives every teacher a personalised view of their work responsibilities. It is clean, intuitive, and focused on the tasks teachers perform most: mark entry, attendance, and student management.</p>
+
+  <h2 class="sub-title">Teacher Dashboard</h2>
+  <ul class="bullets">
+    <li><strong></strong>Overview of assigned subjects and submission status</li>
+    <li><strong></strong>Quick links to mark entry for each subject</li>
+    <li><strong></strong>Pending and approved marks summary</li>
+  </ul>
+
+  <h2 class="sub-title">Class Teacher Dashboard (Class Heads Only)</h2>
+  <ul class="bullets">
+    <li><strong></strong>Full class overview for the stream they are head of</li>
+    <li><strong></strong>Student roster with enrollment status and subject counts</li>
+    <li><strong></strong>Subject marks summary: number of pending, submitted, and approved marks</li>
+    <li><strong></strong>Approve or reject submitted marks from subject teachers with comments</li>
+    <li><strong></strong>Enroll and unenroll students from the class</li>
+    <li><strong></strong>AOI topic management: define and edit topics for each subject</li>
+  </ul>
+
+  <h2 class="sub-title">Mark Entry</h2>
+  <ul class="bullets">
+    <li><strong></strong>Per-subject mark entry page showing all enrolled students</li>
+    <li><strong></strong>Enter BOT, MTE, and EOT exam marks per student</li>
+    <li><strong></strong>Enter AOI scores per student per topic</li>
+    <li><strong></strong>Draft and save functionality before submission</li>
+    <li><strong></strong>Submit marks to class teacher for review</li>
+  </ul>
+
+  <h2 class="sub-title">Attendance Marking</h2>
+  <ul class="bullets">
+    <li><strong></strong>Daily attendance interface for assigned class (class heads only)</li>
+    <li><strong></strong>Select date, mark each student (Present / Absent / Late / Excused)</li>
+    <li><strong></strong>Mark all students at once with bulk shortcuts</li>
+    <li><strong></strong>Add optional notes per student</li>
+  </ul>
+
+  <h2 class="sub-title">Communication</h2>
+  <ul class="bullets">
+    <li><strong></strong>Internal messaging inbox</li>
+    <li><strong></strong>School events and calendar</li>
+  </ul>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════════════════
+       11. DIRECTOR OF STUDIES PORTAL
+  ══════════════════════════════════════════════ -->
+  <h1 class="section-title">11. Director of Studies (DOS) Portal</h1>
+
+  <p>The DOS Portal is the academic oversight hub. The Director of Studies is responsible for ensuring mark quality, managing academic records, publishing report cards, and overseeing the timetable.</p>
+
+  <h2 class="sub-title">Marks Oversight &amp; Approval</h2>
+  <ul class="bullets">
+    <li><strong></strong>View mark submission status across all classes and streams</li>
+    <li><strong></strong>Final approval of marks already approved by class teachers</li>
+    <li><strong></strong>Lock approved marks to prevent further changes</li>
+    <li><strong></strong>Bulk approval of class-level marks for efficiency</li>
+  </ul>
+
+  <h2 class="sub-title">Report Card Management</h2>
+  <ul class="bullets">
+    <li><strong></strong>Generate report cards for any stream once marks are approved</li>
+    <li><strong></strong>Preview individual and class-level report cards before publishing</li>
+    <li><strong></strong>Publish report cards to make them visible in parent and student portals</li>
+    <li><strong></strong>Control which fields appear on AOI report cards</li>
+  </ul>
+
+  <h2 class="sub-title">Academic Structure</h2>
+  <ul class="bullets">
+    <li><strong></strong>Manage classes, streams, subjects, and teacher assignments</li>
+    <li><strong></strong>Approve bulk student promotions</li>
+    <li><strong></strong>Timetable oversight and publishing</li>
+  </ul>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════════════════
+       12. BURSAR PORTAL
+  ══════════════════════════════════════════════ -->
+  <h1 class="section-title">12. Bursar Portal</h1>
+
+  <p>The Bursar Portal provides finance staff with everything they need to manage school finances without requiring access to academic or HR modules. It is focused, efficient, and fully branded with the school's colours.</p>
+
+  <h2 class="sub-title">Bursar Dashboard</h2>
+  <ul class="bullets">
+    <li><strong></strong>Summary tiles: total collected, outstanding fees, number of paid and unpaid students</li>
+    <li><strong></strong>Quick actions: record payment, generate invoice, view recent transactions</li>
+    <li><strong></strong>Revenue charts showing collection trends over the term</li>
+  </ul>
+
+  <h2 class="sub-title">Fee Management</h2>
+  <ul class="bullets">
+    <li><strong></strong>Full access to invoices, payments, fee accounts, structures, and bursaries</li>
+    <li><strong></strong>Receipt generation and reprint capability</li>
+    <li><strong></strong>Outstanding fees list with parent contact details</li>
+  </ul>
+
+  <h2 class="sub-title">Expense Tracking</h2>
+  <ul class="bullets">
+    <li><strong></strong>Record school expenses against expense categories and vendors</li>
+    <li><strong></strong>Expense reports by category, vendor, and date range</li>
+  </ul>
+
+  <h2 class="sub-title">Inventory &amp; Stores</h2>
+  <ul class="bullets">
+    <li><strong></strong>Manage store items with stock levels</li>
+    <li><strong></strong>Record stock movements (received, issued, adjusted)</li>
+    <li><strong></strong>Low stock visibility for procurement planning</li>
+  </ul>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════════════════
+       13. PARENT PORTAL
+  ══════════════════════════════════════════════ -->
+  <h1 class="section-title">13. Parent Portal</h1>
+
+  <p>The Parent Portal keeps parents informed and engaged with their child's school life without requiring visits to the school office. Parents log in securely and access only their own child's data.</p>
+
+  <h2 class="sub-title">What Parents Can Access</h2>
+  <ul class="bullets">
+    <li><strong>Academic Results</strong> View published term results and download formatted report cards (PDF)</li>
+    <li><strong>Attendance</strong> See daily attendance records and absence alerts</li>
+    <li><strong>Fee Account</strong> Current balance, paid invoices, outstanding amounts, payment receipts</li>
+    <li><strong>School Announcements</strong> School-wide news and important notices</li>
+    <li><strong>Events &amp; Calendar</strong> Upcoming school events with full calendar view</li>
+    <li><strong>Messages</strong> Communicate directly with school administration</li>
+  </ul>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════════════════
+       14. STUDENT PORTAL
+  ══════════════════════════════════════════════ -->
+  <h1 class="section-title">14. Student Portal</h1>
+
+  <p>Students have their own secure portal providing self-service access to academic and school information without requiring admin intervention.</p>
+
+  <h2 class="sub-title">What Students Can Access</h2>
+  <ul class="bullets">
+    <li><strong>Results</strong> Personal results and published report cards across all terms and years</li>
+    <li><strong>Assignments</strong> Class assignments submitted by teachers, filtered by academic year and term</li>
+    <li><strong>Learning Resources</strong> Notes, past papers, syllabuses, and assignments uploaded by teachers</li>
+    <li><strong>Timetable</strong> Class timetable view</li>
+    <li><strong>Announcements</strong> School events and notices</li>
+  </ul>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════════════════
+       15. COMMUNICATION & NOTIFICATIONS
+  ══════════════════════════════════════════════ -->
+  <h1 class="section-title">15. Communication &amp; Notifications</h1>
+
+  <p>Somalite includes a built-in communication layer connecting all stakeholders — no third-party messaging app required.</p>
+
+  <h2 class="sub-title">Internal Messaging</h2>
+  <ul class="bullets">
+    <li><strong></strong>One-to-one and group messaging between staff, teachers, parents, and students</li>
+    <li><strong></strong>Inbox with unread message count badge in the navigation sidebar</li>
+    <li><strong></strong>Message delivery receipts</li>
+  </ul>
+
+  <h2 class="sub-title">System Notifications</h2>
+  <ul class="bullets">
+    <li><strong></strong>In-app push notifications for mark submissions, approvals, payment receipts, and attendance alerts</li>
+    <li><strong></strong>Notification preference settings per user</li>
+    <li><strong></strong>Email notifications for critical events (fee payment confirmation, report card publication)</li>
+  </ul>
+
+  <h2 class="sub-title">School Events</h2>
+  <ul class="bullets">
+    <li><strong></strong>Create school events with date, time, location, and description</li>
+    <li><strong></strong>Audience targeting: All, Parents, Teachers, Students, or Public</li>
+    <li><strong></strong>RSVP functionality for parents and staff</li>
+    <li><strong></strong>Event reminders sent automatically before the event date</li>
+  </ul>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════════════════
+       16. INVENTORY & PROCUREMENT
+  ══════════════════════════════════════════════ -->
+  <h1 class="section-title">16. Inventory &amp; Procurement</h1>
+
+  <ul class="bullets">
+    <li><strong></strong>Store management with item catalogue and current stock levels</li>
+    <li><strong></strong>Record all stock movements: received from vendor, issued to department, adjustments</li>
+    <li><strong></strong>Vendor management with contact details and supply history</li>
+    <li><strong></strong>Procurement order creation and tracking</li>
+    <li><strong></strong>School asset register for tracking physical assets (furniture, equipment, vehicles)</li>
+    <li><strong></strong>Library item catalogue and borrowing records</li>
+  </ul>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════════════════
+       17. REPORTING & ANALYTICS
+  ══════════════════════════════════════════════ -->
+  <h1 class="section-title">17. Reporting &amp; Analytics</h1>
+
+  <p>Every module in Somalite produces actionable reports. School leaders have real-time visibility into all aspects of school performance from a single dashboard.</p>
+
+  <h2 class="sub-title">Academic Reports</h2>
+  <ul class="bullets">
+    <li><strong></strong>Class performance analysis: average marks, pass rates, subject comparisons</li>
+    <li><strong></strong>Student result history across terms and years</li>
+    <li><strong></strong>Mark submission status reports (submitted / approved per subject)</li>
+  </ul>
+
+  <h2 class="sub-title">Attendance Reports</h2>
+  <ul class="bullets">
+    <li><strong></strong>Class attendance rate by term with colour-coded performance indicators</li>
+    <li><strong></strong>Per-student attendance history with complete record of every day</li>
+    <li><strong></strong>Chronic absentee identification</li>
+  </ul>
+
+  <h2 class="sub-title">Financial Reports</h2>
+  <ul class="bullets">
+    <li><strong></strong>Revenue collection reports (daily, monthly, term)</li>
+    <li><strong></strong>Outstanding fees analysis by class and student</li>
+    <li><strong></strong>Expense reports by category, vendor, and period</li>
+    <li><strong></strong>Payroll summary reports</li>
+  </ul>
+
+  <h2 class="sub-title">HR Reports</h2>
+  <ul class="bullets">
+    <li><strong></strong>Staff attendance summary</li>
+    <li><strong></strong>Leave balance and utilisation reports</li>
+    <li><strong></strong>Payroll batch summaries</li>
+    <li><strong></strong>Statutory compliance reports (PAYE, NSSF)</li>
+  </ul>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════════════════
+       18. SECURITY & MULTI-TENANCY
+  ══════════════════════════════════════════════ -->
+  <h1 class="section-title">18. Security &amp; Multi-Tenancy</h1>
+
+  <h2 class="sub-title">Data Security</h2>
+  <ul class="bullets">
+    <li><strong></strong>Each school's data is fully isolated — no data is ever shared between schools</li>
+    <li><strong></strong>All connections encrypted via HTTPS/TLS</li>
+    <li><strong></strong>Secure session-based authentication with NextAuth</li>
+    <li><strong></strong>Role-based access: users can only see data relevant to their role</li>
+    <li><strong></strong>Password hashing and secure credential storage</li>
+    <li><strong></strong>Full audit log of all sensitive data changes</li>
+  </ul>
+
+  <h2 class="sub-title">Multi-Tenancy</h2>
+  <ul class="bullets">
+    <li><strong></strong>Each school is a completely separate tenant with its own data, branding, and configuration</li>
+    <li><strong></strong>Schools access their portal via a unique school slug URL (e.g. somalite.com/school/st-marys)</li>
+    <li><strong></strong>Super-admin dashboard for platform management across all schools</li>
+  </ul>
+
+  <h2 class="sub-title">Reliability</h2>
+  <ul class="bullets">
+    <li><strong></strong>Cloud-hosted with 99.9% uptime SLA</li>
+    <li><strong></strong>Automatic daily database backups</li>
+    <li><strong></strong>File storage on Cloudflare R2 with redundancy</li>
+    <li><strong></strong>No hardware procurement or server maintenance required by the school</li>
+  </ul>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════════════════
+       19. IMPLEMENTATION & SUPPORT
+  ══════════════════════════════════════════════ -->
+  <h1 class="section-title">19. Implementation &amp; Support</h1>
+
+  <h2 class="sub-title">Onboarding Process</h2>
+  <table class="stage-table">
+    <thead><tr><th>Timeline</th><th>Activity</th></tr></thead>
+    <tbody>
+      <tr><td>Day 1 – 2</td><td>School profile, academic year, terms, and class structure setup</td></tr>
+      <tr><td>Day 3 – 4</td><td>Subjects, streams, and teacher accounts created</td></tr>
+      <tr><td>Day 5 – 6</td><td>Student data import, parent account creation, fee structure configuration</td></tr>
+      <tr><td>Day 7</td><td>Staff training session (admin, teachers, bursar)</td></tr>
+      <tr><td>Day 8 – 14</td><td>Supervised live operation with support team available</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="sub-title">Training</h2>
+  <ul class="bullets">
+    <li><strong></strong>On-site and remote training sessions for all user roles</li>
+    <li><strong></strong>Video tutorials and user guides provided for each portal</li>
+    <li><strong></strong>Train-the-trainer programme available for large schools</li>
+  </ul>
+
+  <h2 class="sub-title">Ongoing Support</h2>
+  <ul class="bullets">
+    <li><strong></strong>Dedicated support channel (WhatsApp, email, phone)</li>
+    <li><strong>Response times</strong> Critical issues within 2 hours · General queries within 24 hours</li>
+    <li><strong></strong>Regular platform updates with new features rolled out automatically</li>
+    <li><strong></strong>Data migration support if moving from an existing system</li>
+  </ul>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════════════════
+       20. PRICING OVERVIEW
+  ══════════════════════════════════════════════ -->
+  <h1 class="section-title">20. Pricing Overview</h1>
+
+  <p>Somalite is offered on a flexible subscription model based on school size. All plans include the full platform — there are no hidden modules or add-on fees.</p>
+
+  <table class="pricing-table">
+    <thead>
+      <tr>
+        <th>Plan</th>
+        <th>School Size</th>
+        <th>Monthly Fee</th>
+        <th>Includes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Starter</td>
+        <td>Up to 300 students</td>
+        <td>Contact us</td>
+        <td>All modules, 5 staff accounts</td>
+      </tr>
+      <tr>
+        <td>Standard</td>
+        <td>301 – 800 students</td>
+        <td>Contact us</td>
+        <td>All modules, unlimited staff</td>
+      </tr>
+      <tr>
+        <td>Enterprise</td>
+        <td>800+ students</td>
+        <td>Contact us</td>
+        <td>All modules, priority support, custom branding</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="highlight-box">
+    All plans include: unlimited data storage, automatic backups, all future feature updates, onboarding support, and training materials. A <strong>free 30-day trial</strong> is available for all new schools.
+  </div>
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════════════════
+       WHY SOMALITE
+  ══════════════════════════════════════════════ -->
+  <h1 class="section-title">Why Somalite?</h1>
+
+  <div class="why-grid">
+    <div class="why-card">
+      <h3>🌍 Built for African Schools</h3>
+      <p>Somalite was designed from the ground up for the curriculum structures, fee models, and reporting requirements of schools in Uganda and across East Africa. It natively supports O-Level divisions, A-Level point systems, Uganda NSSF/PAYE compliance, and local fee payment methods.</p>
+    </div>
+    <div class="why-card">
+      <h3>🔗 One System, Everything Covered</h3>
+      <p>Many schools run separate tools for marks, fees, payroll, and communication. Somalite replaces all of them. A fee payment recorded by the bursar is instantly visible to the parent. A report card generated by the DOS is immediately available to the student.</p>
+    </div>
+    <div class="why-card">
+      <h3>⚡ Saves Time, Reduces Errors</h3>
+      <p>Manual mark compilation, invoice generation, timetable scheduling, and report preparation take weeks per term. Somalite reduces these to minutes. The multi-stage approval workflow eliminates errors before they reach report cards.</p>
+    </div>
+    <div class="why-card">
+      <h3>👨‍👩‍👧 Transparency for Parents</h3>
+      <p>Parents no longer need to visit the school to check on fee balances or results. The parent portal provides 24/7 access to everything they need — building trust between school and family.</p>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════
+       CTA
+  ══════════════════════════════════════════════ -->
+  <div class="cta">
+    <h2>Ready to Get Started?</h2>
+    <p>We invite your school to schedule a live demonstration of the Somalite platform.</p>
+    <p>See every feature in action with your own school's data structure.</p>
+    <div class="contact-info">
+      📧 info@somalite.com<br />
+      📞 +256 XXX XXX XXX (Phone / WhatsApp)<br />
+      🌐 www.somalite.com
+    </div>
+    <p style="margin-top:24px; font-size:9pt; opacity:0.7; font-style:italic;">— Somalite Technologies | Empowering Schools Through Smarter Management —</p>
+  </div>
+
+</div><!-- /page -->
+</body>
+</html>

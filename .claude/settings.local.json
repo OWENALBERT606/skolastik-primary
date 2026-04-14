@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find \"c:/Users/CC/Desktop/cc/somalite-version-1/app/\\(school\\)/school\" -path \"*streams*\" -name \"*.tsx\")",
+      "Bash(find c:/Users/CC/Desktop/cc/somalite-version-1/actions -name teacher-portal*)",
+      "Bash(find c:/Users/CC/Desktop/cc/somalite-version-1/actions -name *.ts)",
+      "Bash(xargs grep:*)",
+      "Bash(ls \"c:/Users/CC/Desktop/cc/somalite-version-1/app/\\(school\\)/school/[slug]/\")",
+      "Bash(ls \"c:/Users/CC/Desktop/cc/somalite-version-1/app/\\(school\\)/school/[slug]/teacher/\")",
+      "Bash(ls \"c:/Users/CC/Desktop/cc/somalite-version-1/app/\\(school\\)/school/[slug]/teacher/dashboard/\")",
+      "Bash(ls \"c:/Users/CC/Desktop/cc/somalite-version-1/app/\\(school\\)/school/[slug]/teacher/dashboard/components/\")",
+      "Bash(ls \"c:/Users/CC/Desktop/cc/somalite-version-1/app/\\(school\\)/school/[slug]/academics/streams/[id]/subjects/[subjectId]/\")",
+      "Bash(grep -rn purple-[0-9] /c/Users/CC/Desktop/cc/somalite-version-1 --include=*.tsx --include=*.ts --include=*.jsx --include=*.js --include=*.css --exclude-dir=node_modules --exclude-dir=.next --exclude-dir=.git)",
+      "Bash(sed \"s|/c/Users/CC/Desktop/cc/somalite-version-1/||\")",
+      "Read(//tmp/**)",
+      "Bash(while read:*)",
+      "Bash(do sed:*)",
+      "Bash(npx tsc:*)",
+      "Bash(ls \"c:\\\\Users\\\\CC\\\\Desktop\\\\cc\\\\somalite-version-1\\\\app\\\\\\(school\\)\\\\school\\\\[slug]\\\\academics\\\\streams\\\\[id]\\\\subjects\\\\[subjectId]\\\\components\"\")",
+      "Bash(ls '/c/Users/CC/Desktop/cc/somalite-version-1/app/\\(school\\)/school/[slug]/academics/streams/[id]/subjects/[subjectId]/components/')",
+      "Bash(ls -la /c/Users/CC/Desktop/cc/somalite-version-1/app/\\\\\\(school\\\\\\)/school/[slug]/portal-select/)",
+      "Bash(find /c/Users/CC/Desktop/cc/somalite-version-1 -name useAuth* -o -name *useAuth*)",
+      "Bash(ls -la /c/Users/CC/Desktop/cc/somalite-version-1/app/\\\\\\(school\\\\\\)/school/[slug]/staff/components/)",
+      "Bash(wc -l /c/Users/CC/Desktop/cc/somalite-version-1/app/\\\\\\(school\\\\\\)/school/[slug]/staff/components/*.tsx)",
+      "Bash(find /c/Users/CC/Desktop/cc/somalite-version-1 -type d -name [slug])",
+      "Bash(find /c/Users/CC/Desktop/cc/somalite-version-1/app/\\\\\\(school\\\\\\)/school/[slug] -type f -name \"page.tsx\" -o -type d)",
+      "Bash(find /c/Users/CC/Desktop/cc/somalite-version-1/app/\\\\\\(dos\\\\\\)/school/[slug] -type f -o -type d)"
+    ]
+  }
+}
