@@ -14,12 +14,14 @@ export function buildMetadata({
   path = "",
   image = DEFAULT_IMAGE,
   noIndex = false,
+  keywords,
 }: {
   title: string;
   description?: string;
   path?: string;
   image?: string;
   noIndex?: boolean;
+  keywords?: string[];
 }): Metadata {
   const fullTitle = title === SITE_NAME ? title : `${title} | ${SITE_NAME}`;
   const url = `${BASE_URL}${path}`;
@@ -27,6 +29,7 @@ export function buildMetadata({
   return {
     title: fullTitle,
     description,
+    keywords,
     metadataBase: new URL(BASE_URL),
     alternates: { canonical: url },
     openGraph: {
