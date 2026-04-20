@@ -1,35 +1,21 @@
-import DataTable from "@/components/DataTableComponents/DataTable";
-import TableHeader from "@/components/dashboard/Tables/TableHeader";
-import { columns } from "./columns";
-import { db } from "@/prisma/db";
+import { db }          from "@/prisma/db";
+import UsersClient      from "./users-client";
 
-export default async function page() {
-  // Only show users with the schooladmin role
-  const users = await db.user.findMany({
-    where: {
-      roles: {
-        some: {
-          roleName: { in: ["schooladmin", "school_admin", "SCHOOLADMIN"] },
-        },
+export default async function UsersPage() {
+  const [users, roles] = await Promise.all([
+    db.user.findMany({
+      orderBy: { createdAt: "desc" },
+      include: {
+        roles:   true,
+        school:  { select: { id: true, name: true, code: true } },
       },
-    },
-    orderBy: { createdAt: "desc" },
-    include: {
-      roles:        true,
-      schoolAdmins: true,
-    },
-  });
+    }),
+    db.role.findMany({ orderBy: { displayName: "asc" } }),
+  ]);
 
   return (
-    <div className="p-8">
-      <TableHeader
-        title="School Admins"
-        linkTitle="Add User"
-        href="/dashboard/users/new"
-        data={users}
-        model="user"
-      />
-      <DataTable columns={columns} data={users} />
+    <div className="p-6 lg:p-8">
+      <UsersClient users={users as any} roles={roles} />
     </div>
   );
 }
